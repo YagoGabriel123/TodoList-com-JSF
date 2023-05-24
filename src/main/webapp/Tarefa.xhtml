@@ -1,0 +1,64 @@
+<ui:composition template="/WEB-INF/template/MenuGenerico.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://xmlns.jcp.org/jsf/html"
+				xmlns:f="http://xmlns.jcp.org/jsf/core"
+				xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="corpo">
+
+		<h:form id="frm">
+			<p:messages autoUpdate="true" />
+			<p:panelGrid columns="2">
+
+				<p:outputLabel for="titulo" value="Tarefa" />
+				<p:inputText id="titulo" size="30" value="#{tarefaMB.tarefa.titulo}"
+							 required="true" label="Tarefa" />
+
+				<p:outputLabel for="descricao" value="Descrição" />
+				<p:inputText id="descricao" size="100" value="#{tarefaMB.tarefa.descricao}"
+							 required="true" label="Descricao" />
+
+				<p:outputLabel for="prioridade" value="Prioridade" />
+				<p:selectOneMenu id="prioridade" size="1" value="#{tarefaMB.tarefa.prioridade}"
+								 required="true" label="Prioridade" >
+					<f:selectItem itemLabel="Selecione o Nível de Prioridade"
+								  noSelectionOption="true" />
+					<f:selectItem itemLabel="Alta" itemValue="A" />
+					<f:selectItem itemLabel="Média" itemValue="M" />
+					<f:selectItem itemLabel="Baixa" itemValue="B" />
+				</p:selectOneMenu>
+
+				<p:commandButton value="Cadastrar" actionListener="#{tarefaMB.adicionar}"
+								 update="frm tabela" style="margin-top: 10px" />
+			</p:panelGrid>
+
+			<p:dataTable value="#{tarefaMB.tarefas}" var="m" id="tabela"
+						 paginator="true" rows="5">
+
+				<p:column headerText="Descrição">
+					<p:outputLabel value="#{m.descricao}" />
+				</p:column>
+
+				<p:column headerText="Prioridade" width="200">
+					<p:outputLabel value="#{m.prioridade}" />
+				</p:column>
+
+				<p:column headerText="" width="200">
+					<p:commandButton icon="pi pi-pencil" update="@form"
+									 process="@this">
+						<f:setPropertyActionListener value="#{m}"
+													 target="#{tarefaMB.tarefa}" />
+					</p:commandButton>
+
+					<p:commandButton icon="pi pi-trash" update="tabela"
+									 process="@this">
+						<f:setPropertyActionListener value="#{m}"
+													 target="#{tarefaMB.tarefa}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
